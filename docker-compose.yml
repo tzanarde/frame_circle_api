@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  frame_circle_api-db:
+    image: postgres
+    container_name: frame_circle_api-db
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${PGDATABASE_DEV}
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+    ports:
+      - "5433:5432"
+    networks:
+      - frame_circle_api-api-network
+
+  frame_circle_api-api:
+    image: frame_circle_api-api
+    container_name: frame_circle_api-api
+    env_file:
+      - .env
+    build: .
+    environment:
+      - DBHOST=${PGHOST}
+      - DBUSER=${PGUSER}
+      - DBPASS=${PGPASSWORD}
+    volumes:
+      - .:/frame_circle_api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - frame_circle_api-db
+    networks:
+      - frame_circle_api-api-network
+
+networks:
+  frame_circle_api-api-network:
+    driver: bridge
+
+volumes:
+  postgres:

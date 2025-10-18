@@ -1,0 +1,23 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: <%= ENV["PGUSER"] %>
+  password: <%= ENV["PGPASSWORD"] %>
+  host: <%= ENV.fetch("PGHOST", "localhost") %>
+
+development:
+  <<: *default
+  database: <%= ENV.fetch("PGDATABASE_DEV", "frame_circle_api_development") %>
+
+test:
+  <<: *default
+  database: <%= ENV.fetch("PGDATABASE_TEST", "frame_circle_api_test") %>
+
+production:
+  <<: *default
+  database: <%= ENV["PGDATABASE_PROD"] %>
+  username: <%= ENV.fetch("PGUSER") %>
+  password: <%= ENV.fetch("PGPASSWORD") %>
+  host: <%= ENV.fetch("PGHOST") %>
+  
