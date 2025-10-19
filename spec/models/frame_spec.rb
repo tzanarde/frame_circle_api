@@ -31,8 +31,8 @@ RSpec.describe Frame, type: :model do
       context 'for a valid frame' do
         context 'not passing through another frame' do
           context 'not touching another frame' do
-            it 'creates a circle' do
-
+            it 'creates a frame' do
+              
             end
           end
         end
@@ -41,22 +41,22 @@ RSpec.describe Frame, type: :model do
         context 'passing through another frame' do
           context 'passing through only one frame' do
             context 'when the other frame is on the top' do
-              it 'do not create a circle' do
+              it 'do not create a frame' do
   
               end
             end
             context 'when the other frame is on the right' do
-              it 'do not create a circle' do
+              it 'do not create a frame' do
   
               end
             end
             context 'when the other frame is on the bottom' do
-              it 'do not create a circle' do
+              it 'do not create a frame' do
   
               end
             end
             context 'when the other frame is on the left' do
-              it 'do not create a circle' do
+              it 'do not create a frame' do
   
               end
             end
@@ -64,22 +64,22 @@ RSpec.describe Frame, type: :model do
           context 'passing through multiple frames' do
             context 'when the other frames are on the same border' do
               context 'on the top' do
-                it 'do not create a circle' do
+                it 'do not create a frame' do
     
                 end
               end
               context 'on the right' do
-                it 'do not create a circle' do
+                it 'do not create a frame' do
     
                 end
               end
               context 'on the bottom' do
-                it 'do not create a circle' do
+                it 'do not create a frame' do
     
                 end
               end
               context 'on the left' do
-                it 'do not create a circle' do
+                it 'do not create a frame' do
     
                 end
               end
@@ -87,60 +87,60 @@ RSpec.describe Frame, type: :model do
             context 'when the other frames are on diferent borders' do
               context 'on two borders' do
                 context 'for the top and right borders' do
-                  it 'do not create a circle' do
+                  it 'do not create a frame' do
 
                   end
                 end
                 context 'for the right and bottom borders' do
-                  it 'do not create a circle' do
+                  it 'do not create a frame' do
 
                   end
                 end
                 context 'for the bottom and left borders' do
-                  it 'do not create a circle' do
+                  it 'do not create a frame' do
 
                   end
                 end
                 context 'for the left and top borders' do
-                  it 'do not create a circle' do
+                  it 'do not create a frame' do
 
                   end
                 end
                 context 'for the top and bottom borders' do
-                  it 'do not create a circle' do
+                  it 'do not create a frame' do
 
                   end
                 end
                 context 'for the left and right borders' do
-                  it 'do not create a circle' do
+                  it 'do not create a frame' do
 
                   end
                 end
               end
               context 'on three borders' do
                 context 'for the top, right and bottom borders' do
-                  it 'do not create a circle' do
+                  it 'do not create a frame' do
 
                   end
                 end
                 context 'for the right, bottom and left borders' do
-                  it 'do not create a circle' do
+                  it 'do not create a frame' do
 
                   end
                 end
                 context 'for the bottom, left and top borders' do
-                  it 'do not create a circle' do
+                  it 'do not create a frame' do
 
                   end
                 end
                 context 'for the left, top and right borders' do
-                  it 'do not create a circle' do
+                  it 'do not create a frame' do
 
                   end
                 end
               end
               context 'on all four borders' do
-                it 'do not create a circle' do
+                it 'do not create a frame' do
 
                 end
               end
@@ -150,22 +150,22 @@ RSpec.describe Frame, type: :model do
         context 'touching another frame' do
           context 'touching only one frame' do
             context 'when the other frame is on the top' do
-              it 'do not create a circle' do
+              it 'do not create a frame' do
   
               end
             end
             context 'when the other frame is on the right' do
-              it 'do not create a circle' do
+              it 'do not create a frame' do
   
               end
             end
             context 'when the other frame is on the bottom' do
-              it 'do not create a circle' do
+              it 'do not create a frame' do
   
               end
             end
             context 'when the other frame is on the left' do
-              it 'do not create a circle' do
+              it 'do not create a frame' do
   
               end
             end
@@ -173,22 +173,22 @@ RSpec.describe Frame, type: :model do
           context 'touching multiple frames' do
             context 'when the other frames are on the same border' do
               context 'on the top' do
-                it 'do not create a circle' do
+                it 'do not create a frame' do
     
                 end
               end
               context 'on the right' do
-                it 'do not create a circle' do
+                it 'do not create a frame' do
     
                 end
               end
               context 'on the bottom' do
-                it 'do not create a circle' do
+                it 'do not create a frame' do
     
                 end
               end
               context 'on the left' do
-                it 'do not create a circle' do
+                it 'do not create a frame' do
     
                 end
               end
@@ -196,60 +196,60 @@ RSpec.describe Frame, type: :model do
             context 'when the other frames are on diferent borders' do
               context 'on two borders' do
                 context 'for the top and right borders' do
-                  it 'do not create a circle' do
+                  it 'do not create a frame' do
 
                   end
                 end
                 context 'for the right and bottom borders' do
-                  it 'do not create a circle' do
+                  it 'do not create a frame' do
 
                   end
                 end
                 context 'for the bottom and left borders' do
-                  it 'do not create a circle' do
+                  it 'do not create a frame' do
 
                   end
                 end
                 context 'for the left and top borders' do
-                  it 'do not create a circle' do
+                  it 'do not create a frame' do
 
                   end
                 end
                 context 'for the top and bottom borders' do
-                  it 'do not create a circle' do
+                  it 'do not create a frame' do
 
                   end
                 end
                 context 'for the left and right borders' do
-                  it 'do not create a circle' do
+                  it 'do not create a frame' do
 
                   end
                 end
               end
               context 'on three borders' do
                 context 'for the top, right and bottom borders' do
-                  it 'do not create a circle' do
+                  it 'do not create a frame' do
 
                   end
                 end
                 context 'for the right, bottom and left borders' do
-                  it 'do not create a circle' do
+                  it 'do not create a frame' do
 
                   end
                 end
                 context 'for the bottom, left and top borders' do
-                  it 'do not create a circle' do
+                  it 'do not create a frame' do
 
                   end
                 end
                 context 'for the left, top and right borders' do
-                  it 'do not create a circle' do
+                  it 'do not create a frame' do
 
                   end
                 end
               end
               context 'on all four borders' do
-                it 'do not create a circle' do
+                it 'do not create a frame' do
 
                 end
               end
