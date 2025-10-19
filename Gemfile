@@ -55,3 +55,8 @@ group :development, :test do
   # Gem for Swagger API specification
   gem 'rswag-specs'
 end
+
+group :test do
+  # Gem for rspec matchers
+  gem 'shoulda-matchers', '~> 6.0'
+end
