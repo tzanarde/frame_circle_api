@@ -16,242 +16,148 @@ RSpec.describe Frame, type: :model do
     context 'for the fields type' do
       it { is_expected.to have_db_column(:center_x).of_type(:decimal) }
       it { is_expected.to have_db_column(:center_y).of_type(:decimal) }
-      it { is_expected.to have_db_column(:height).of_type(:decimal) }
       it { is_expected.to have_db_column(:width).of_type(:decimal) }
+      it { is_expected.to have_db_column(:height).of_type(:decimal) }
     end
 
     context 'for the decimal fields amount' do
       it { is_expected.to validate_numericality_of(:center_x).is_greater_than_or_equal_to(0) }
       it { is_expected.to validate_numericality_of(:center_y).is_greater_than_or_equal_to(0) }
-      it { is_expected.to validate_numericality_of(:height).is_greater_than_or_equal_to(0) }
       it { is_expected.to validate_numericality_of(:width).is_greater_than_or_equal_to(0) }
+      it { is_expected.to validate_numericality_of(:height).is_greater_than_or_equal_to(0) }
     end
-
+  
     context 'for the frame-frame relation' do
-      context 'for a valid frame' do
-        context 'not passing through another frame' do
-          context 'not touching another frame' do
-            it 'creates a frame' do
-              
-            end
-          end
+      let(:attributes_for_frame_to_add) { attributes_for(:frame, :commom_frame) }
+      let(:frame_to_add) { Frame.create(attributes_for_frame_to_add) }
+      context 'when the frame is valid' do
+        context 'not overlapping or touching another frame' do
+          it_behaves_like 'a valid frame'
         end
       end
-      context 'for an invalid frame' do
-        context 'passing through another frame' do
-          context 'passing through only one frame' do
-            context 'when the other frame is on the top' do
-              it 'do not create a frame' do
-  
-              end
+      context 'when the frame is invalid' do
+        context 'overlapping another frame' do
+          context 'overlapping only one frame and affecting only one border' do
+            context 'when the existing frame is on the top' do
+              before { create(:frame, :existing_frame_overlapping_the_top_border) }
+
+              it_behaves_like 'an invalid frame overlapping or touching a border and returning error', :top
             end
-            context 'when the other frame is on the right' do
-              it 'do not create a frame' do
-  
-              end
+            context 'when the existing frame is on the right' do
+              before { create(:frame, :existing_frame_overlapping_the_right_border) }
+
+              it_behaves_like 'an invalid frame overlapping or touching a border and returning error', :right
             end
-            context 'when the other frame is on the bottom' do
-              it 'do not create a frame' do
-  
-              end
+            context 'when the existing frame is on the bottom' do
+              before { create(:frame, :existing_frame_overlapping_the_bottom_border) }
+
+              it_behaves_like 'an invalid frame overlapping or touching a border and returning error', :bottom
             end
-            context 'when the other frame is on the left' do
-              it 'do not create a frame' do
-  
-              end
+            context 'when the existing frame is on the left' do
+              before { create(:frame, :existing_frame_overlapping_the_left_border) }
+
+              it_behaves_like 'an invalid frame overlapping or touching a border and returning error', :left
             end
           end
-          context 'passing through multiple frames' do
-            context 'when the other frames are on the same border' do
-              context 'on the top' do
-                it 'do not create a frame' do
-    
-                end
+          context 'overlapping multiple existing frames' do
+            context 'when the existing frames are on the same border' do
+              before do
+                create(:frame, :existing_frame_overlapping_the_top_border)
+                create(:frame, :second_existing_frame_overlapping_the_top_border)
               end
-              context 'on the right' do
-                it 'do not create a frame' do
-    
-                end
-              end
-              context 'on the bottom' do
-                it 'do not create a frame' do
-    
-                end
-              end
-              context 'on the left' do
-                it 'do not create a frame' do
-    
-                end
-              end
+
+              it_behaves_like 'an invalid frame overlapping or touching a border and returning error', :top
             end
-            context 'when the other frames are on diferent borders' do
+            context 'when the existing frames are on different borders' do
               context 'on two borders' do
-                context 'for the top and right borders' do
-                  it 'do not create a frame' do
-
-                  end
+                before do
+                  create(:frame, :existing_frame_overlapping_the_top_border)
+                  create(:frame, :existing_frame_overlapping_the_right_border)
                 end
-                context 'for the right and bottom borders' do
-                  it 'do not create a frame' do
 
-                  end
-                end
-                context 'for the bottom and left borders' do
-                  it 'do not create a frame' do
-
-                  end
-                end
-                context 'for the left and top borders' do
-                  it 'do not create a frame' do
-
-                  end
-                end
-                context 'for the top and bottom borders' do
-                  it 'do not create a frame' do
-
-                  end
-                end
-                context 'for the left and right borders' do
-                  it 'do not create a frame' do
-
-                  end
-                end
+                it_behaves_like 'an invalid frame overlapping or touching multiple borders and returning error'
               end
               context 'on three borders' do
-                context 'for the top, right and bottom borders' do
-                  it 'do not create a frame' do
-
-                  end
+                before do
+                  create(:frame, :existing_frame_overlapping_the_top_border)
+                  create(:frame, :existing_frame_overlapping_the_right_border)
+                  create(:frame, :existing_frame_overlapping_the_bottom_border)
                 end
-                context 'for the right, bottom and left borders' do
-                  it 'do not create a frame' do
-
-                  end
-                end
-                context 'for the bottom, left and top borders' do
-                  it 'do not create a frame' do
-
-                  end
-                end
-                context 'for the left, top and right borders' do
-                  it 'do not create a frame' do
-
-                  end
-                end
+                
+                it_behaves_like 'an invalid frame overlapping or touching multiple borders and returning error'
               end
               context 'on all four borders' do
-                it 'do not create a frame' do
-
+                before do
+                  create(:frame, :existing_frame_overlapping_the_top_border)
+                  create(:frame, :existing_frame_overlapping_the_right_border)
+                  create(:frame, :existing_frame_overlapping_the_bottom_border)
+                  create(:frame, :existing_frame_overlapping_the_left_border)
                 end
+                  
+                  it_behaves_like 'an invalid frame overlapping or touching multiple borders and returning error'
               end
             end
           end
         end
         context 'touching another frame' do
           context 'touching only one frame' do
-            context 'when the other frame is on the top' do
-              it 'do not create a frame' do
-  
-              end
+            context 'when the existing frame is on the top' do
+              before { create(:frame, :existing_frame_touching_the_top_border) }
+
+              it_behaves_like 'an invalid frame overlapping or touching a border and returning error', :top
             end
-            context 'when the other frame is on the right' do
-              it 'do not create a frame' do
-  
-              end
+            context 'when the existing frame is on the right' do
+              before { create(:frame, :existing_frame_touching_the_right_border) }
+
+              it_behaves_like 'an invalid frame overlapping or touching a border and returning error', :right
             end
-            context 'when the other frame is on the bottom' do
-              it 'do not create a frame' do
-  
-              end
+            context 'when the existing frame is on the bottom' do
+              before { create(:frame, :existing_frame_touching_the_bottom_border) }
+
+              it_behaves_like 'an invalid frame overlapping or touching a border and returning error', :bottom
             end
-            context 'when the other frame is on the left' do
-              it 'do not create a frame' do
-  
-              end
+            context 'when the existing frame is on the left' do
+              before { create(:frame, :existing_frame_touching_the_left_border) }
+
+              it_behaves_like 'an invalid frame overlapping or touching a border and returning error', :left
             end
           end
-          context 'touching multiple frames' do
-            context 'when the other frames are on the same border' do
-              context 'on the top' do
-                it 'do not create a frame' do
-    
-                end
+          context 'touching multiple existing frames' do
+            context 'when the existing frames are on the same border' do
+              before do
+                create(:frame, :existing_frame_touching_the_top_border)
+                create(:frame, :second_existing_frame_touching_the_top_border)
               end
-              context 'on the right' do
-                it 'do not create a frame' do
-    
-                end
-              end
-              context 'on the bottom' do
-                it 'do not create a frame' do
-    
-                end
-              end
-              context 'on the left' do
-                it 'do not create a frame' do
-    
-                end
-              end
+
+              it_behaves_like 'an invalid frame overlapping or touching a border and returning error', :top
             end
-            context 'when the other frames are on diferent borders' do
+            context 'when the existing frames are on different borders' do
               context 'on two borders' do
-                context 'for the top and right borders' do
-                  it 'do not create a frame' do
-
-                  end
+                before do
+                  create(:frame, :existing_frame_touching_the_top_border)
+                  create(:frame, :existing_frame_touching_the_right_border)
                 end
-                context 'for the right and bottom borders' do
-                  it 'do not create a frame' do
 
-                  end
-                end
-                context 'for the bottom and left borders' do
-                  it 'do not create a frame' do
-
-                  end
-                end
-                context 'for the left and top borders' do
-                  it 'do not create a frame' do
-
-                  end
-                end
-                context 'for the top and bottom borders' do
-                  it 'do not create a frame' do
-
-                  end
-                end
-                context 'for the left and right borders' do
-                  it 'do not create a frame' do
-
-                  end
-                end
+                it_behaves_like 'an invalid frame overlapping or touching multiple borders and returning error'
               end
               context 'on three borders' do
-                context 'for the top, right and bottom borders' do
-                  it 'do not create a frame' do
-
-                  end
+                before do
+                  create(:frame, :existing_frame_touching_the_top_border)
+                  create(:frame, :existing_frame_touching_the_right_border)
+                  create(:frame, :existing_frame_touching_the_bottom_border)
                 end
-                context 'for the right, bottom and left borders' do
-                  it 'do not create a frame' do
 
-                  end
-                end
-                context 'for the bottom, left and top borders' do
-                  it 'do not create a frame' do
-
-                  end
-                end
-                context 'for the left, top and right borders' do
-                  it 'do not create a frame' do
-
-                  end
-                end
+                it_behaves_like 'an invalid frame overlapping or touching multiple borders and returning error'
               end
               context 'on all four borders' do
-                it 'do not create a frame' do
-
+                before do
+                  create(:frame, :existing_frame_touching_the_top_border)
+                  create(:frame, :existing_frame_touching_the_right_border)
+                  create(:frame, :existing_frame_touching_the_bottom_border)
+                  create(:frame, :existing_frame_touching_the_left_border)
                 end
+
+                it_behaves_like 'an invalid frame overlapping or touching multiple borders and returning error'
               end
             end
           end
