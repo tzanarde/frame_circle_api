@@ -55,8 +55,19 @@ localhost:3000
 
 Para rodar os testes do RSpec:
 
+Rodando todos os testes do projeto:
 ```sh
 docker compose exec frame_circle_api-api rspec
+```
+
+Rodando os testes de um arquivo específico:
+```sh
+docker compose exec frame_circle_api-api rspec NOME_DO_ARQUIVO_DE_TESTE
+```
+
+Rodando os testes de um arquivo específico a partir de uma linha específica:
+```sh
+docker compose exec frame_circle_api-api rspec NOME_DO_ARQUIVO_DE_TESTE:NUMERO_DA_LINHA
 ```
 
 ---
