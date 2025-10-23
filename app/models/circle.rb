@@ -1,16 +1,51 @@
 class Circle < ApplicationRecord
-  # References
+  # Associations
   belongs_to :frame
 
   # Validations
-  validates :center_x, presence: true,
-                       numericality: { greater_than_or_equal_to: 0 }
+  validates :center_x, :center_y, :diameter,
+            presence: true,
+            numericality: { greater_than_or_equal_to: 0 }
 
-  validates :center_y, presence: true,
-                       numericality: { greater_than_or_equal_to: 0 }
+  # Cutom Validations
+  validate :must_be_within_frame, if: :has_frame?
 
-  validates :diameter, presence: true,
-                       numericality: { greater_than_or_equal_to: 0 }
+  validate :must_not_overlap_or_touch_other_circles, if: -> { has_frame? && any_circles? }
 
-  validates :frame_id, presence: true
+  # Scopes
+  scope :circles_overlapping, -> (center_x, center_y, radius, exclude_id) do
+    where('SQRT(POWER(ABS(? - center_x), 2) + POWER(ABS(? - center_y), 2)) <= (? + (diameter / 2.0))',
+          center_x, center_y, radius)
+    .where.not(id: exclude_id)
+  end
+
+  # Attribute Methods
+  def radius = diameter / 2
+
+  private
+
+  def must_not_overlap_or_touch_other_circles
+    return unless circle_overlaps_or_touches_exist?
+    
+    errors.add(:base, I18n.t('messages.error.circle_overlap_or_touch_an_existing_circle'))
+  end
+
+  def must_be_within_frame
+    return if circle_within_the_frame?
+    
+    errors.add(:base, I18n.t('messages.error.circle_overlap_the_frame'))
+  end
+
+  def circle_overlaps_or_touches_exist?
+    self.class.circles_overlapping(center_x, center_y, radius, id).exists?
+  end
+
+  def circle_within_the_frame?
+    (frame.center_x - center_x).abs + radius <= (frame.width / 2.0) &&
+    (frame.center_y - center_y).abs + radius <= (frame.height / 2.0)
+  end
+
+  def has_frame? = frame
+
+  def any_circles? = frame.circles.exists?
 end
