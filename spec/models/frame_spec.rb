@@ -2,7 +2,18 @@ require 'rails_helper'
 
 RSpec.describe Frame, type: :model do
   describe "associations" do
-    it { should have_many(:circles) }
+    context 'for the relations' do
+      it { should have_many(:circles) }
+    end
+    context 'for the destroy behavior' do
+      it 'destroys all associated circles' do
+        frame = create(:frame, :common_frame)
+        create(:circle, :circle_within_frame, frame_id: frame.id)
+        create(:circle, :second_circle_within_frame, frame_id: frame.id)
+
+        expect { frame.destroy }.to change { Circle.count }.by(-2)
+      end
+    end
   end
 
   describe 'validations' do
@@ -28,136 +39,228 @@ RSpec.describe Frame, type: :model do
     end
   
     context 'for the frame-frame relation' do
-      let(:attributes_for_frame_to_add) { attributes_for(:frame, :commom_frame) }
-      let(:frame_to_add) { Frame.create(attributes_for_frame_to_add) }
       context 'when the frame is valid' do
         context 'not overlapping or touching another frame' do
+          include_context 'with a frame to add', :common_frame
+
           it_behaves_like 'a valid frame'
         end
       end
       context 'when the frame is invalid' do
         context 'overlapping another frame' do
-          context 'overlapping only one frame and affecting only one border' do
-            context 'when the existing frame is on the top' do
-              before { create(:frame, :existing_frame_overlapping_the_top_border) }
+          context 'overlapping only one frame' do
+            context 'overlapping only one border' do
+              context 'when the existing frame is overlapping on the top of the new frame' do
+                include_context 'with an existing frame', :existing_frame_overlapping_the_top_border
+                include_context 'with a frame to add', :common_frame
 
-              it_behaves_like 'an invalid frame overlapping or touching a border and returning error', :top
+                it_behaves_like 'an invalid frame'
+              end
+              context 'when the existing frame is overlapping on the right of the new frame' do
+                include_context 'with an existing frame', :existing_frame_overlapping_the_right_border
+                include_context 'with a frame to add', :common_frame
+
+                it_behaves_like 'an invalid frame'
+              end
+              context 'when the existing frame is overlapping on the bottom of the new frame' do
+                include_context 'with an existing frame', :existing_frame_overlapping_the_bottom_border
+                include_context 'with a frame to add', :common_frame
+
+                it_behaves_like 'an invalid frame'
+              end
+              context 'when the existing frame is overlapping on the left of the new frame' do
+                include_context 'with an existing frame', :existing_frame_overlapping_the_left_border
+                include_context 'with a frame to add', :common_frame
+
+                it_behaves_like 'an invalid frame'
+              end
             end
-            context 'when the existing frame is on the right' do
-              before { create(:frame, :existing_frame_overlapping_the_right_border) }
+            context 'overlapping multiple borders' do
+              context 'when the overlap is crossing' do
+                context 'when the existing frame is vertically crossing the new frame' do
+                  include_context 'with an existing frame', :existing_frame_vertically_crossing_the_new_frame
+                  include_context 'with a frame to add', :common_frame
 
-              it_behaves_like 'an invalid frame overlapping or touching a border and returning error', :right
+                  it_behaves_like 'an invalid frame'
+                end
+                context 'when the existing frame is horizontally crossing the new frame' do
+                  include_context 'with an existing frame', :existing_frame_horizontally_crossing_the_new_frame
+                  include_context 'with a frame to add', :common_frame
+
+                  it_behaves_like 'an invalid frame'
+                end
+              end
+              context 'when the overlap is on the corners' do
+                context 'when the existing frame is overlapping on the top/right corner of the new frame' do
+                  include_context 'with an existing frame', :existing_frame_overlapping_top_right_corner
+                  include_context 'with a frame to add', :common_frame
+
+                  it_behaves_like 'an invalid frame'
+                end
+                context 'when the existing frame is overlapping on the bottom/right corner of the new frame' do
+                  include_context 'with an existing frame', :existing_frame_overlapping_bottom_right_corner
+                  include_context 'with a frame to add', :common_frame
+
+                  it_behaves_like 'an invalid frame'
+                end
+                context 'when the existing frame is overlapping on the bottom/left corner of the new frame' do
+                  include_context 'with an existing frame', :existing_frame_overlapping_bottom_left_corner
+                  include_context 'with a frame to add', :common_frame
+
+                  it_behaves_like 'an invalid frame'
+                end
+                context 'when the existing frame is overlapping on the top/left corner of the new frame' do
+                  include_context 'with an existing frame', :existing_frame_overlapping_top_left_corner
+                  include_context 'with a frame to add', :common_frame
+
+                  it_behaves_like 'an invalid frame'
+                end
+              end
             end
-            context 'when the existing frame is on the bottom' do
-              before { create(:frame, :existing_frame_overlapping_the_bottom_border) }
+            context 'when the existing frame is completely within the new frame' do
+              include_context 'with an existing frame', :existing_frame_completely_within_the_new_frame
+              include_context 'with a frame to add', :common_frame
 
-              it_behaves_like 'an invalid frame overlapping or touching a border and returning error', :bottom
+              it_behaves_like 'an invalid frame'
             end
-            context 'when the existing frame is on the left' do
-              before { create(:frame, :existing_frame_overlapping_the_left_border) }
+            context 'when the existing frame is completely encompassing the new frame' do
+              include_context 'with an existing frame', :existing_frame_completely_encompassing_the_new_frame
+              include_context 'with a frame to add', :common_frame
 
-              it_behaves_like 'an invalid frame overlapping or touching a border and returning error', :left
+              it_behaves_like 'an invalid frame'
             end
           end
           context 'overlapping multiple existing frames' do
             context 'when the existing frames are on the same border' do
-              before do
-                create(:frame, :existing_frame_overlapping_the_top_border)
-                create(:frame, :second_existing_frame_overlapping_the_top_border)
-              end
+              include_context 'with an existing frame', :existing_frame_overlapping_the_top_border
+              include_context 'with an existing frame', :second_existing_frame_overlapping_the_top_border
+              include_context 'with a frame to add', :common_frame
 
-              it_behaves_like 'an invalid frame overlapping or touching a border and returning error', :top
+              it_behaves_like 'an invalid frame'
             end
             context 'when the existing frames are on different borders' do
               context 'on two borders' do
-                before do
-                  create(:frame, :existing_frame_overlapping_the_top_border)
-                  create(:frame, :existing_frame_overlapping_the_right_border)
-                end
+                include_context 'with an existing frame', :existing_frame_overlapping_the_top_border
+                include_context 'with an existing frame', :existing_frame_overlapping_the_right_border
+                include_context 'with a frame to add', :common_frame
 
-                it_behaves_like 'an invalid frame overlapping or touching multiple borders and returning error'
+                it_behaves_like 'an invalid frame'
               end
               context 'on three borders' do
-                before do
-                  create(:frame, :existing_frame_overlapping_the_top_border)
-                  create(:frame, :existing_frame_overlapping_the_right_border)
-                  create(:frame, :existing_frame_overlapping_the_bottom_border)
-                end
+                include_context 'with an existing frame', :existing_frame_overlapping_the_top_border
+                include_context 'with an existing frame', :existing_frame_overlapping_the_right_border
+                include_context 'with an existing frame', :existing_frame_overlapping_the_bottom_border
+                include_context 'with a frame to add', :common_frame
                 
-                it_behaves_like 'an invalid frame overlapping or touching multiple borders and returning error'
+                it_behaves_like 'an invalid frame'
               end
               context 'on all four borders' do
-                before do
-                  create(:frame, :existing_frame_overlapping_the_top_border)
-                  create(:frame, :existing_frame_overlapping_the_right_border)
-                  create(:frame, :existing_frame_overlapping_the_bottom_border)
-                  create(:frame, :existing_frame_overlapping_the_left_border)
-                end
-                  
-                  it_behaves_like 'an invalid frame overlapping or touching multiple borders and returning error'
+                include_context 'with an existing frame', :existing_frame_overlapping_the_top_border
+                include_context 'with an existing frame', :existing_frame_overlapping_the_right_border
+                include_context 'with an existing frame', :existing_frame_overlapping_the_bottom_border
+                include_context 'with an existing frame', :existing_frame_overlapping_the_left_border
+                include_context 'with a frame to add', :common_frame
+
+                it_behaves_like 'an invalid frame'
               end
             end
           end
         end
         context 'touching another frame' do
           context 'touching only one frame' do
-            context 'when the existing frame is on the top' do
-              before { create(:frame, :existing_frame_touching_the_top_border) }
+            context 'touching only one border' do
+              context 'when the existing frame is on the top' do
+                include_context 'with an existing frame', :existing_frame_touching_the_top_border
+                include_context 'with a frame to add', :common_frame
 
-              it_behaves_like 'an invalid frame overlapping or touching a border and returning error', :top
+                it_behaves_like 'an invalid frame'
+              end
+              context 'when the existing frame is on the right' do
+                include_context 'with an existing frame', :existing_frame_touching_the_right_border
+                include_context 'with a frame to add', :common_frame
+
+                it_behaves_like 'an invalid frame'
+              end
+              context 'when the existing frame is on the bottom' do
+                include_context 'with an existing frame', :existing_frame_touching_the_bottom_border
+                include_context 'with a frame to add', :common_frame
+
+                it_behaves_like 'an invalid frame'
+              end
+              context 'when the existing frame is on the left' do
+                include_context 'with an existing frame', :existing_frame_touching_the_left_border
+                include_context 'with a frame to add', :common_frame
+
+                it_behaves_like 'an invalid frame'
+              end
             end
-            context 'when the existing frame is on the right' do
-              before { create(:frame, :existing_frame_touching_the_right_border) }
+            context 'when is touching the corners' do
+              context 'when the existing frame is touching on the top/right corner of the new frame' do
+                include_context 'with an existing frame', :existing_frame_touching_top_right_corner
+                include_context 'with a frame to add', :common_frame
 
-              it_behaves_like 'an invalid frame overlapping or touching a border and returning error', :right
+                it_behaves_like 'an invalid frame'
+              end
+              context 'when the existing frame is touching on the bottom/right corner of the new frame' do
+                include_context 'with an existing frame', :existing_frame_touching_bottom_right_corner
+                include_context 'with a frame to add', :common_frame
+
+                it_behaves_like 'an invalid frame'
+              end
+              context 'when the existing frame is touching on the bottom/left corner of the new frame' do
+                include_context 'with an existing frame', :existing_frame_touching_bottom_left_corner
+                include_context 'with a frame to add', :common_frame
+
+                it_behaves_like 'an invalid frame'
+              end
+              context 'when the existing frame is touching on the top/left corner of the new frame' do
+                include_context 'with an existing frame', :existing_frame_touching_top_left_corner
+                include_context 'with a frame to add', :common_frame
+
+                it_behaves_like 'an invalid frame'
+              end
             end
-            context 'when the existing frame is on the bottom' do
-              before { create(:frame, :existing_frame_touching_the_bottom_border) }
-
-              it_behaves_like 'an invalid frame overlapping or touching a border and returning error', :bottom
-            end
-            context 'when the existing frame is on the left' do
-              before { create(:frame, :existing_frame_touching_the_left_border) }
-
-              it_behaves_like 'an invalid frame overlapping or touching a border and returning error', :left
+            context 'touching multiple borders' do
+              context 'when the existing frame is equal to the new frame' do
+                  include_context 'with an existing frame', :common_frame
+                  include_context 'with a frame to add', :common_frame
+  
+                it_behaves_like 'an invalid frame'
+              end
             end
           end
           context 'touching multiple existing frames' do
             context 'when the existing frames are on the same border' do
-              before do
-                create(:frame, :existing_frame_touching_the_top_border)
-                create(:frame, :second_existing_frame_touching_the_top_border)
-              end
+              include_context 'with an existing frame', :existing_frame_touching_the_top_border
+              include_context 'with an existing frame', :second_existing_frame_touching_the_top_border
+              include_context 'with a frame to add', :common_frame
 
-              it_behaves_like 'an invalid frame overlapping or touching a border and returning error', :top
+              it_behaves_like 'an invalid frame'
             end
             context 'when the existing frames are on different borders' do
               context 'on two borders' do
-                before do
-                  create(:frame, :existing_frame_touching_the_top_border)
-                  create(:frame, :existing_frame_touching_the_right_border)
-                end
+                include_context 'with an existing frame', :existing_frame_touching_the_top_border
+                include_context 'with an existing frame', :existing_frame_touching_the_right_border
+                include_context 'with a frame to add', :common_frame
 
-                it_behaves_like 'an invalid frame overlapping or touching multiple borders and returning error'
+                it_behaves_like 'an invalid frame'
               end
               context 'on three borders' do
-                before do
-                  create(:frame, :existing_frame_touching_the_top_border)
-                  create(:frame, :existing_frame_touching_the_right_border)
-                  create(:frame, :existing_frame_touching_the_bottom_border)
-                end
+                include_context 'with an existing frame', :existing_frame_touching_the_top_border
+                include_context 'with an existing frame', :existing_frame_touching_the_right_border
+                include_context 'with an existing frame', :existing_frame_touching_the_bottom_border
+                include_context 'with a frame to add', :common_frame
 
-                it_behaves_like 'an invalid frame overlapping or touching multiple borders and returning error'
+                it_behaves_like 'an invalid frame'
               end
               context 'on all four borders' do
-                before do
-                  create(:frame, :existing_frame_touching_the_top_border)
-                  create(:frame, :existing_frame_touching_the_right_border)
-                  create(:frame, :existing_frame_touching_the_bottom_border)
-                  create(:frame, :existing_frame_touching_the_left_border)
-                end
+                include_context 'with an existing frame', :existing_frame_touching_the_top_border
+                include_context 'with an existing frame', :existing_frame_touching_the_right_border
+                include_context 'with an existing frame', :existing_frame_touching_the_bottom_border
+                include_context 'with an existing frame', :existing_frame_touching_the_left_border
+                include_context 'with a frame to add', :common_frame
 
-                it_behaves_like 'an invalid frame overlapping or touching multiple borders and returning error'
+                it_behaves_like 'an invalid frame'
               end
             end
           end
