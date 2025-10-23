@@ -28,5 +28,9 @@ module FrameCircleApi
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # Sets the default locale
+    config.i18n.available_locales = [:'pt-BR', :en]
+    config.i18n.fallbacks = [:en]
   end
 end

@@ -1,0 +1,6 @@
+pt-BR:
+  messages:
+    error:
+      frame_overlap_or_touch_an_existing_frame: O novo quadro está se sobrepondo ou encostando em um ou mais quadros existentes
+      circle_overlap_the_frame: O novo círculo está se sobrepondo ao quadro
+      circle_overlap_or_touch_an_existing_circle: O novo círculo está se sobrepondo ou encostando em um ou mais círculos existentes

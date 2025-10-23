@@ -1,16 +1,6 @@
 en:
   messages:
     error:
-      frame_overlap_or_touch_top_border: The new frame is overlapping or touching one or more existing frames on the top border
-      frame_overlap_or_touch_right_border: The new frame is overlapping or touching one or more existing frames on the right border
-      frame_overlap_or_touch_bottom_border: The new frame is overlapping or touching one or more existing frames on the bottom border
-      frame_overlap_or_touch_left_border: The new frame is overlapping or touching one or more existing frames on the left border
-      frame_overlap_or_touch_multiple_borders: The new frame is overlapping or touching one or more existing frames on multiple borders
-      circle_overlap_the_top_border: The new circle is overlapping the frame on the top border
-      circle_overlap_the_right_border: The new circle is overlapping the frame on the right border
-      circle_overlap_the_bottom_border: The new circle is overlapping the frame on the bottom border
-      circle_overlap_the_left_border: The new circle is overlapping the frame on the left border
-      circle_overlap_multiple_frame_borders: The new circle is overlapping the frame on multiple borders
-      circle_out_of_the_frame: The new circle is completely out of the frame
-      circle_overlap_or_touch_an_existing_circle: The new circle is overlapping or touching an existing circle
-      circle_overlap_or_touch_multiple_existing_circles: The new circle is overlapping or touching multiple existing circles
+      frame_overlap_or_touch_an_existing_frame: The new frame is overlapping or touching one or more existing frames
+      circle_overlap_the_frame: The new circle is overlapping the frame
+      circle_overlap_or_touch_an_existing_circle: The new circle is overlapping or touching one or more existing circles
