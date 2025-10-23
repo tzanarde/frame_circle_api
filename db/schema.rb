@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_19_005744) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_21_161954) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "circles", force: :cascade do |t|
-    t.decimal "center_x"
-    t.decimal "center_y"
-    t.decimal "diameter"
+    t.decimal "center_x", null: false
+    t.decimal "center_y", null: false
+    t.decimal "diameter", null: false
     t.bigint "frame_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -25,12 +25,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_19_005744) do
   end
 
   create_table "frames", force: :cascade do |t|
-    t.decimal "center_x"
-    t.decimal "center_y"
-    t.decimal "height"
-    t.decimal "width"
+    t.decimal "center_x", null: false
+    t.decimal "center_y", null: false
+    t.decimal "height", null: false
+    t.decimal "width", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index "((center_x + (width / 2.0)))", name: "index_frames_on_right_line"
+    t.index "((center_x - (width / 2.0)))", name: "index_frames_on_left_line"
+    t.index "((center_y + (height / 2.0)))", name: "index_frames_on_top_line"
+    t.index "((center_y - (height / 2.0)))", name: "index_frames_on_bottom_line"
   end
 
   add_foreign_key "circles", "frames"
