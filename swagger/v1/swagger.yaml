@@ -1,0 +1,92 @@
+---
+openapi: 3.0.1
+info:
+  title: Frame Circle API
+  version: v1
+  description: API documentation for managing frames and circles.
+paths:
+  "/api/v1/frames/{id}":
+    get:
+      summary: Returns a frame
+      tags:
+      - Frames
+      parameters:
+      - name: id
+        in: path
+        description: Frame ID
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Frame Returned
+        '404':
+          description: Frame Not Found
+    delete:
+      summary: Deletes a frame with no circles within
+      tags:
+      - Frames
+      parameters:
+      - name: id
+        in: path
+        description: Frame ID
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: Frame Deleted
+        '404':
+          description: Frame Not Found
+        '422':
+          description: Frame Has Circles
+  "/api/v1/frames":
+    post:
+      summary: Creates a frame and circles within
+      tags:
+      - Frames
+      parameters: []
+      responses:
+        '201':
+          description: Frame Created
+        '422':
+          description: Invalid Request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                frame:
+                  type: object
+                  properties:
+                    center_x:
+                      type: number
+                    center_y:
+                      type: number
+                    width:
+                      type: number
+                    height:
+                      type: number
+                    circles_attributes:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          center_x:
+                            type: number
+                          center_y:
+                            type: number
+                          diameter:
+                            type: number
+              required:
+              - center_x
+              - center_y
+              - width
+              - height
+servers:
+- url: http://{defaultHost}
+  description: Local development server
+  variables:
+    defaultHost:
+      default: 192.168.15.81:3000
