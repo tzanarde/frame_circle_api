@@ -4,3 +4,4 @@ en:
       frame_overlap_or_touch_an_existing_frame: The new frame is overlapping or touching one or more existing frames
       circle_overlap_the_frame: The new circle is overlapping the frame
       circle_overlap_or_touch_an_existing_circle: The new circle is overlapping or touching one or more existing circles
+      circle_overlap_or_touch_an_inserting_circle: The new circle is overlapping or touching one or more inserting circles
