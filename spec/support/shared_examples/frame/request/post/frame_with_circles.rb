@@ -1,0 +1,45 @@
+RSpec.shared_examples 'a frame with circles within' do
+  let(:circle_expected_values) { frame_params[:circles_attributes] }
+
+  let(:circle_attribute_names) { [:center_x, :center_y, :diameter] }
+
+  let(:circle_positions) do
+    [
+      { topmost_circle: :max_by, axis: :center_y},
+      { rightmost_circle: :max_by, axis: :center_x },
+      { bottommost_circle: :min_by, axis: :center_y },
+      { leftmost_circle: :min_by, axis: :center_x }
+    ]
+  end
+
+  include_examples 'a POST response with a frame'
+
+  it 'creates the circles' do
+    expect(Circle.count).to eq(Array(circle_expected_values).count)
+  end
+
+  it 'returns the correct amount of circles within' do
+    expect(json['circles_amount']).to eq(Array(circle_expected_values).count)
+  end
+
+  it 'returns the correct values for the extreme position circles within' do
+    circle_positions.each do |position_info|
+      position = position_info.keys.first
+      method = position_info[position]
+      axis = position_info[:axis]
+
+      actual_value = json[position.to_s][axis.to_s].to_f
+      expected_value = circle_expected_values.public_send(method) { |circle| circle[axis] }[axis]
+
+      expect(actual_value).to eq(expected_value)
+    end
+  end
+
+  it 'returns the correct values for the circles within' do
+    circle_expected_values.each_with_index do |circle, circle_index|
+      circle_attribute_names.each do |attribute|
+        expect(json['circles'][circle_index][attribute.to_s].to_f).to eq(circle[attribute])
+      end
+    end
+  end
+end
