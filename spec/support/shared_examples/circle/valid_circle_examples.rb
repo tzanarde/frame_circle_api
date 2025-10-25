@@ -10,7 +10,7 @@ RSpec.shared_examples 'a valid circle on a frame' do
   end
 
   it 'is placed within the correct frame' do
-    expect(circle_to_add.frame).to eq(frame)
+    expect(circle_to_add.frame).to eq(existing_frame)
   end
 
   it 'has the correct values' do
