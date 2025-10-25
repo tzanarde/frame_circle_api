@@ -6,13 +6,46 @@ RSpec.describe Frame, type: :model do
       it { should have_many(:circles) }
     end
     context 'for the destroy behavior' do
-      it 'destroys all associated circles' do
-        frame = create(:frame, :common_frame)
-        create(:circle, :circle_within_frame, frame_id: frame.id)
-        create(:circle, :second_circle_within_frame, frame_id: frame.id)
+      context 'when the frame has no circles within' do
+        it 'do not destroy the frame and the circles' do
+          frame = create(:frame, :common_frame)
 
-        expect { frame.destroy }.to change { Circle.count }.by(-2)
+          expect { frame.destroy }.to change { Frame.count }.by(-1)
+        end
       end
+      context 'when the frame has circles within' do
+        it 'do not destroy the frame and the circles' do
+          frame = create(:frame, :common_frame)
+          create(:circle, :circle_within_frame, frame_id: frame.id)
+          create(:circle, :second_circle_within_frame, frame_id: frame.id)
+
+          expect { frame.destroy }.to change { Circle.count }.by(0).and change { Frame.count }.by(0)
+        end
+      end
+    end
+  end
+
+  describe 'methods' do
+    include_context 'with an existing frame', :common_frame
+    context 'for the extreme circles' do
+      context 'for the topmost_circle method' do
+        it_behaves_like 'an extreme position circle within the frame', :topmost
+      end
+      context 'for the rightmost_circle method' do
+        it_behaves_like 'an extreme position circle within the frame', :rightmost
+      end
+      context 'for the bottommost_circle method' do
+        it_behaves_like 'an extreme position circle within the frame', :bottommost
+      end
+      context 'for the leftmost_circle method' do
+        it_behaves_like 'an extreme position circle within the frame', :leftmost
+      end
+    end
+    context 'for the total amount of circles within a frame' do
+      include_context 'with an existing circle', :circle_within_frame
+      include_context 'with a second existing circle', :second_circle_within_frame
+
+      it_behaves_like 'the amount of circles within a frame'
     end
   end
 
