@@ -1,13 +1,14 @@
 class Frame < ApplicationRecord
   # Associations
-  has_many :circles, dependent: :destroy
+  has_many :circles, dependent: :restrict_with_error
+  accepts_nested_attributes_for :circles
 
   # Validations
   validates :center_x, :center_y, :width, :height,
             presence: true,
             numericality: { greater_than_or_equal_to: 0 }
 
-  # Cutom Validations
+  # Custom Validations
   validate :must_not_overlap_or_touch_other_frames, if: :any_frames?
 
   # Scopes
@@ -16,6 +17,13 @@ class Frame < ApplicationRecord
     .where('ABS(center_y - ?) <= ((height / 2.0) + (? / 2.0))', center_y, height)
     .where.not(id: exclude_id)
   end
+
+  # Attribute Methods
+  def topmost_circle = circles.order(center_y: :desc).first&.slice(:center_x, :center_y)
+  def rightmost_circle = circles.order(center_x: :desc).first&.slice(:center_x, :center_y)
+  def bottommost_circle = circles.order(center_y: :asc).first&.slice(:center_x, :center_y)
+  def leftmost_circle = circles.order(center_x: :asc).first&.slice(:center_x, :center_y)
+  def circles_amount = circles.count
 
   private
 
