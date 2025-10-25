@@ -7,8 +7,10 @@ class Circle < ApplicationRecord
             presence: true,
             numericality: { greater_than_or_equal_to: 0 }
 
-  # Cutom Validations
+  # Custom Validations
   validate :must_be_within_frame, if: :has_frame?
+
+  validate :inserting_circles_must_not_overlap_or_touch_each_other, if: :inserting_multiple_circles?
 
   validate :must_not_overlap_or_touch_other_circles, if: -> { has_frame? && any_circles? }
 
@@ -24,20 +26,10 @@ class Circle < ApplicationRecord
 
   private
 
-  def must_not_overlap_or_touch_other_circles
-    return unless circle_overlaps_or_touches_exist?
-    
-    errors.add(:base, I18n.t('messages.error.circle_overlap_or_touch_an_existing_circle'))
-  end
-
   def must_be_within_frame
     return if circle_within_the_frame?
     
     errors.add(:base, I18n.t('messages.error.circle_overlap_the_frame'))
-  end
-
-  def circle_overlaps_or_touches_exist?
-    self.class.circles_overlapping(center_x, center_y, radius, id).exists?
   end
 
   def circle_within_the_frame?
@@ -45,7 +37,37 @@ class Circle < ApplicationRecord
     (frame.center_y - center_y).abs + radius <= (frame.height / 2.0)
   end
 
+  def inserting_circles_must_not_overlap_or_touch_each_other
+    return if self.frame.circles.none? { |circle| inserting_circle_overlaps_or_touches_exist?(circle) }
+
+    errors.add(:base, I18n.t('messages.error.circle_overlap_or_touch_an_inserting_circle'))
+  end
+
+  def inserting_circle_overlaps_or_touches_exist?(circle)
+    return false if circle == self
+
+    centers_distance(circle) <= (radius + (circle.diameter / 2.0))
+  end
+
+  def must_not_overlap_or_touch_other_circles
+    return unless circle_overlaps_or_touches_exist?
+    
+    errors.add(:base, I18n.t('messages.error.circle_overlap_or_touch_an_existing_circle'))
+  end
+
+  def circle_overlaps_or_touches_exist?
+    self.class.circles_overlapping(center_x, center_y, radius, id).exists?
+  end
+
+  def centers_distance(circle)
+    Math.sqrt(((center_x - circle.center_x) ** 2) + ((center_y - circle.center_y) ** 2))
+  end
+
   def has_frame? = frame
 
   def any_circles? = frame.circles.exists?
+
+  def inserting_multiple_circles?
+    self.frame.present? && self.frame.circles.size > 1
+  end
 end
