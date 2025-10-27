@@ -5,6 +5,128 @@ info:
   version: v1
   description: API documentation for managing frames and circles.
 paths:
+  "/api/v1/circles":
+    get:
+      summary: Returns circles
+      tags:
+      - Circles
+      parameters:
+      - name: center_x
+        in: query
+        description: X axis center point of the filter area
+        schema:
+          type: number
+      - name: center_y
+        in: query
+        description: Y axis center point of the filter area
+        schema:
+          type: number
+      - name: radius
+        in: query
+        description: Radius of the filter area
+        schema:
+          type: number
+      - name: frame_id
+        in: query
+        required: false
+        description: Frame ID of the filter area
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Blank parameter
+  "/api/v1/frames/{frame_id}/circles":
+    post:
+      summary: Creates a circle within a frame
+      tags:
+      - Circles
+      parameters:
+      - name: frame_id
+        in: path
+        description: Frame ID
+        required: true
+        schema:
+          type: integer
+      responses:
+        '201':
+          description: Circle created successfully within the frame
+        '404':
+          description: Invalid frame
+        '422':
+          description: Invalid circle position because of a frame overlapping
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                circle:
+                  type: object
+                  properties:
+                    center_x:
+                      type: number
+                    center_y:
+                      type: number
+                    diameter:
+                      type: number
+              required:
+              - circle
+        required: true
+  "/api/v1/circles/{id}":
+    put:
+      summary: Updates a circle's position and frame
+      tags:
+      - Circles
+      parameters:
+      - name: id
+        in: path
+        description: Circle ID
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Circle frame updated successfully
+        '404':
+          description: Circle not found
+        '422':
+          description: Invalid new frame for a circle
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                circle:
+                  type: object
+                  properties:
+                    center_x:
+                      type: number
+                    center_y:
+                      type: number
+                    diameter:
+                      type: number
+                    frame_id:
+                      type: integer
+              required:
+              - circle
+        required: true
+    delete:
+      summary: Deletes a circle
+      tags:
+      - Circles
+      parameters:
+      - name: id
+        in: path
+        description: Circle ID
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: Circle deleted successfully
+        '404':
+          description: Circle not found
   "/api/v1/frames/{id}":
     get:
       summary: Returns a frame
@@ -19,9 +141,9 @@ paths:
           type: integer
       responses:
         '200':
-          description: Frame Returned
+          description: Frame with multiple circles within returned successfully
         '404':
-          description: Frame Not Found
+          description: Frame not found
     delete:
       summary: Deletes a frame with no circles within
       tags:
@@ -35,11 +157,11 @@ paths:
           type: integer
       responses:
         '204':
-          description: Frame Deleted
+          description: Frame deleted successfully
         '404':
           description: Frame Not Found
         '422':
-          description: Frame Has Circles
+          description: Frame with a multiple circles within
   "/api/v1/frames":
     post:
       summary: Creates a frame and circles within
@@ -48,9 +170,9 @@ paths:
       parameters: []
       responses:
         '201':
-          description: Frame Created
+          description: Frame with multiple circles created successfully
         '422':
-          description: Invalid Request
+          description: Invalid circle attributes
       requestBody:
         content:
           application/json:
@@ -80,10 +202,8 @@ paths:
                           diameter:
                             type: number
               required:
-              - center_x
-              - center_y
-              - width
-              - height
+              - frame
+        required: true
 servers:
 - url: http://{defaultHost}
   description: Local development server
