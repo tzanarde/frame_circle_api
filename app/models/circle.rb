@@ -21,6 +21,13 @@ class Circle < ApplicationRecord
     .where.not(id: exclude_id)
   end
 
+  scope :circles_within_area, -> (center_x, center_y, radius) do
+    where('(SQRT(POWER(ABS(? - center_x), 2) + POWER(ABS(? - center_y), 2)) + (diameter / 2.0)) <= ?',
+          center_x, center_y, radius)
+  end
+
+  scope :by_frame, -> (frame_id) { where(frame_id: frame_id) }
+
   # Attribute Methods
   def radius = diameter / 2
 
@@ -68,6 +75,6 @@ class Circle < ApplicationRecord
   def any_circles? = frame.circles.exists?
 
   def inserting_multiple_circles?
-    self.frame.present? && self.frame.circles.size > 1
+    self.frame.present? && frame.circles.select(&:new_record?).size > 1
   end
 end
