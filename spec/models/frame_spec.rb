@@ -26,7 +26,7 @@ RSpec.describe Frame, type: :model do
   end
 
   describe 'methods' do
-    include_context 'with an existing frame', :common_frame
+    include_context 'with a frame', :existing_frame, :common_frame
     context 'for the extreme circles' do
       context 'for the topmost_circle method' do
         it_behaves_like 'an extreme position circle within the frame', :topmost
@@ -42,8 +42,8 @@ RSpec.describe Frame, type: :model do
       end
     end
     context 'for the total amount of circles within a frame' do
-      include_context 'with an existing circle', :circle_within_frame
-      include_context 'with a second existing circle', :second_circle_within_frame
+      include_context 'with an existing circle', :existing_circle, :existing_frame, :circle_within_frame
+      include_context 'with an existing circle', :second_existing_circle, :existing_frame, :second_circle_within_frame
 
       it_behaves_like 'the amount of circles within a frame'
     end
@@ -84,25 +84,25 @@ RSpec.describe Frame, type: :model do
           context 'overlapping only one frame' do
             context 'overlapping only one border' do
               context 'when the existing frame is overlapping on the top of the new frame' do
-                include_context 'with an existing frame', :existing_frame_overlapping_the_top_border
+                include_context 'with a frame', :existing_frame, :existing_frame_overlapping_the_top_border
                 include_context 'with a frame to add', :common_frame
 
                 it_behaves_like 'an invalid frame'
               end
               context 'when the existing frame is overlapping on the right of the new frame' do
-                include_context 'with an existing frame', :existing_frame_overlapping_the_right_border
+                include_context 'with a frame', :existing_frame, :existing_frame_overlapping_the_right_border
                 include_context 'with a frame to add', :common_frame
 
                 it_behaves_like 'an invalid frame'
               end
               context 'when the existing frame is overlapping on the bottom of the new frame' do
-                include_context 'with an existing frame', :existing_frame_overlapping_the_bottom_border
+                include_context 'with a frame', :existing_frame, :existing_frame_overlapping_the_bottom_border
                 include_context 'with a frame to add', :common_frame
 
                 it_behaves_like 'an invalid frame'
               end
               context 'when the existing frame is overlapping on the left of the new frame' do
-                include_context 'with an existing frame', :existing_frame_overlapping_the_left_border
+                include_context 'with a frame', :existing_frame, :existing_frame_overlapping_the_left_border
                 include_context 'with a frame to add', :common_frame
 
                 it_behaves_like 'an invalid frame'
@@ -111,13 +111,13 @@ RSpec.describe Frame, type: :model do
             context 'overlapping multiple borders' do
               context 'when the overlap is crossing' do
                 context 'when the existing frame is vertically crossing the new frame' do
-                  include_context 'with an existing frame', :existing_frame_vertically_crossing_the_new_frame
+                  include_context 'with a frame', :existing_frame, :existing_frame_vertically_crossing_the_new_frame
                   include_context 'with a frame to add', :common_frame
 
                   it_behaves_like 'an invalid frame'
                 end
                 context 'when the existing frame is horizontally crossing the new frame' do
-                  include_context 'with an existing frame', :existing_frame_horizontally_crossing_the_new_frame
+                  include_context 'with a frame', :existing_frame, :existing_frame_horizontally_crossing_the_new_frame
                   include_context 'with a frame to add', :common_frame
 
                   it_behaves_like 'an invalid frame'
@@ -125,25 +125,25 @@ RSpec.describe Frame, type: :model do
               end
               context 'when the overlap is on the corners' do
                 context 'when the existing frame is overlapping on the top/right corner of the new frame' do
-                  include_context 'with an existing frame', :existing_frame_overlapping_top_right_corner
+                  include_context 'with a frame', :existing_frame, :existing_frame_overlapping_top_right_corner
                   include_context 'with a frame to add', :common_frame
 
                   it_behaves_like 'an invalid frame'
                 end
                 context 'when the existing frame is overlapping on the bottom/right corner of the new frame' do
-                  include_context 'with an existing frame', :existing_frame_overlapping_bottom_right_corner
+                  include_context 'with a frame', :existing_frame, :existing_frame_overlapping_bottom_right_corner
                   include_context 'with a frame to add', :common_frame
 
                   it_behaves_like 'an invalid frame'
                 end
                 context 'when the existing frame is overlapping on the bottom/left corner of the new frame' do
-                  include_context 'with an existing frame', :existing_frame_overlapping_bottom_left_corner
+                  include_context 'with a frame', :existing_frame, :existing_frame_overlapping_bottom_left_corner
                   include_context 'with a frame to add', :common_frame
 
                   it_behaves_like 'an invalid frame'
                 end
                 context 'when the existing frame is overlapping on the top/left corner of the new frame' do
-                  include_context 'with an existing frame', :existing_frame_overlapping_top_left_corner
+                  include_context 'with a frame', :existing_frame, :existing_frame_overlapping_top_left_corner
                   include_context 'with a frame to add', :common_frame
 
                   it_behaves_like 'an invalid frame'
@@ -151,13 +151,13 @@ RSpec.describe Frame, type: :model do
               end
             end
             context 'when the existing frame is completely within the new frame' do
-              include_context 'with an existing frame', :existing_frame_completely_within_the_new_frame
+              include_context 'with a frame', :existing_frame, :existing_frame_completely_within_the_new_frame
               include_context 'with a frame to add', :common_frame
 
               it_behaves_like 'an invalid frame'
             end
             context 'when the existing frame is completely encompassing the new frame' do
-              include_context 'with an existing frame', :existing_frame_completely_encompassing_the_new_frame
+              include_context 'with a frame', :existing_frame, :existing_frame_completely_encompassing_the_new_frame
               include_context 'with a frame to add', :common_frame
 
               it_behaves_like 'an invalid frame'
@@ -165,33 +165,33 @@ RSpec.describe Frame, type: :model do
           end
           context 'overlapping multiple existing frames' do
             context 'when the existing frames are on the same border' do
-              include_context 'with an existing frame', :existing_frame_overlapping_the_top_border
-              include_context 'with an existing frame', :second_existing_frame_overlapping_the_top_border
+              include_context 'with a frame', :existing_frame, :existing_frame_overlapping_the_top_border
+              include_context 'with a frame', :existing_frame, :second_existing_frame_overlapping_the_top_border
               include_context 'with a frame to add', :common_frame
 
               it_behaves_like 'an invalid frame'
             end
             context 'when the existing frames are on different borders' do
               context 'on two borders' do
-                include_context 'with an existing frame', :existing_frame_overlapping_the_top_border
-                include_context 'with an existing frame', :existing_frame_overlapping_the_right_border
+                include_context 'with a frame', :existing_frame, :existing_frame_overlapping_the_top_border
+                include_context 'with a frame', :existing_frame, :existing_frame_overlapping_the_right_border
                 include_context 'with a frame to add', :common_frame
 
                 it_behaves_like 'an invalid frame'
               end
               context 'on three borders' do
-                include_context 'with an existing frame', :existing_frame_overlapping_the_top_border
-                include_context 'with an existing frame', :existing_frame_overlapping_the_right_border
-                include_context 'with an existing frame', :existing_frame_overlapping_the_bottom_border
+                include_context 'with a frame', :existing_frame, :existing_frame_overlapping_the_top_border
+                include_context 'with a frame', :existing_frame, :existing_frame_overlapping_the_right_border
+                include_context 'with a frame', :existing_frame, :existing_frame_overlapping_the_bottom_border
                 include_context 'with a frame to add', :common_frame
                 
                 it_behaves_like 'an invalid frame'
               end
               context 'on all four borders' do
-                include_context 'with an existing frame', :existing_frame_overlapping_the_top_border
-                include_context 'with an existing frame', :existing_frame_overlapping_the_right_border
-                include_context 'with an existing frame', :existing_frame_overlapping_the_bottom_border
-                include_context 'with an existing frame', :existing_frame_overlapping_the_left_border
+                include_context 'with a frame', :existing_frame, :existing_frame_overlapping_the_top_border
+                include_context 'with a frame', :existing_frame, :existing_frame_overlapping_the_right_border
+                include_context 'with a frame', :existing_frame, :existing_frame_overlapping_the_bottom_border
+                include_context 'with a frame', :existing_frame, :existing_frame_overlapping_the_left_border
                 include_context 'with a frame to add', :common_frame
 
                 it_behaves_like 'an invalid frame'
@@ -203,25 +203,25 @@ RSpec.describe Frame, type: :model do
           context 'touching only one frame' do
             context 'touching only one border' do
               context 'when the existing frame is on the top' do
-                include_context 'with an existing frame', :existing_frame_touching_the_top_border
+                include_context 'with a frame', :existing_frame, :existing_frame_touching_the_top_border
                 include_context 'with a frame to add', :common_frame
 
                 it_behaves_like 'an invalid frame'
               end
               context 'when the existing frame is on the right' do
-                include_context 'with an existing frame', :existing_frame_touching_the_right_border
+                include_context 'with a frame', :existing_frame, :existing_frame_touching_the_right_border
                 include_context 'with a frame to add', :common_frame
 
                 it_behaves_like 'an invalid frame'
               end
               context 'when the existing frame is on the bottom' do
-                include_context 'with an existing frame', :existing_frame_touching_the_bottom_border
+                include_context 'with a frame', :existing_frame, :existing_frame_touching_the_bottom_border
                 include_context 'with a frame to add', :common_frame
 
                 it_behaves_like 'an invalid frame'
               end
               context 'when the existing frame is on the left' do
-                include_context 'with an existing frame', :existing_frame_touching_the_left_border
+                include_context 'with a frame', :existing_frame, :existing_frame_touching_the_left_border
                 include_context 'with a frame to add', :common_frame
 
                 it_behaves_like 'an invalid frame'
@@ -229,25 +229,25 @@ RSpec.describe Frame, type: :model do
             end
             context 'when is touching the corners' do
               context 'when the existing frame is touching on the top/right corner of the new frame' do
-                include_context 'with an existing frame', :existing_frame_touching_top_right_corner
+                include_context 'with a frame', :existing_frame, :existing_frame_touching_top_right_corner
                 include_context 'with a frame to add', :common_frame
 
                 it_behaves_like 'an invalid frame'
               end
               context 'when the existing frame is touching on the bottom/right corner of the new frame' do
-                include_context 'with an existing frame', :existing_frame_touching_bottom_right_corner
+                include_context 'with a frame', :existing_frame, :existing_frame_touching_bottom_right_corner
                 include_context 'with a frame to add', :common_frame
 
                 it_behaves_like 'an invalid frame'
               end
               context 'when the existing frame is touching on the bottom/left corner of the new frame' do
-                include_context 'with an existing frame', :existing_frame_touching_bottom_left_corner
+                include_context 'with a frame', :existing_frame, :existing_frame_touching_bottom_left_corner
                 include_context 'with a frame to add', :common_frame
 
                 it_behaves_like 'an invalid frame'
               end
               context 'when the existing frame is touching on the top/left corner of the new frame' do
-                include_context 'with an existing frame', :existing_frame_touching_top_left_corner
+                include_context 'with a frame', :existing_frame, :existing_frame_touching_top_left_corner
                 include_context 'with a frame to add', :common_frame
 
                 it_behaves_like 'an invalid frame'
@@ -255,7 +255,7 @@ RSpec.describe Frame, type: :model do
             end
             context 'touching multiple borders' do
               context 'when the existing frame is equal to the new frame' do
-                  include_context 'with an existing frame', :common_frame
+                  include_context 'with a frame', :existing_frame, :common_frame
                   include_context 'with a frame to add', :common_frame
   
                 it_behaves_like 'an invalid frame'
@@ -264,33 +264,33 @@ RSpec.describe Frame, type: :model do
           end
           context 'touching multiple existing frames' do
             context 'when the existing frames are on the same border' do
-              include_context 'with an existing frame', :existing_frame_touching_the_top_border
-              include_context 'with an existing frame', :second_existing_frame_touching_the_top_border
+              include_context 'with a frame', :existing_frame, :existing_frame_touching_the_top_border
+              include_context 'with a frame', :existing_frame, :second_existing_frame_touching_the_top_border
               include_context 'with a frame to add', :common_frame
 
               it_behaves_like 'an invalid frame'
             end
             context 'when the existing frames are on different borders' do
               context 'on two borders' do
-                include_context 'with an existing frame', :existing_frame_touching_the_top_border
-                include_context 'with an existing frame', :existing_frame_touching_the_right_border
+                include_context 'with a frame', :existing_frame, :existing_frame_touching_the_top_border
+                include_context 'with a frame', :existing_frame, :existing_frame_touching_the_right_border
                 include_context 'with a frame to add', :common_frame
 
                 it_behaves_like 'an invalid frame'
               end
               context 'on three borders' do
-                include_context 'with an existing frame', :existing_frame_touching_the_top_border
-                include_context 'with an existing frame', :existing_frame_touching_the_right_border
-                include_context 'with an existing frame', :existing_frame_touching_the_bottom_border
+                include_context 'with a frame', :existing_frame, :existing_frame_touching_the_top_border
+                include_context 'with a frame', :existing_frame, :existing_frame_touching_the_right_border
+                include_context 'with a frame', :existing_frame, :existing_frame_touching_the_bottom_border
                 include_context 'with a frame to add', :common_frame
 
                 it_behaves_like 'an invalid frame'
               end
               context 'on all four borders' do
-                include_context 'with an existing frame', :existing_frame_touching_the_top_border
-                include_context 'with an existing frame', :existing_frame_touching_the_right_border
-                include_context 'with an existing frame', :existing_frame_touching_the_bottom_border
-                include_context 'with an existing frame', :existing_frame_touching_the_left_border
+                include_context 'with a frame', :existing_frame, :existing_frame_touching_the_top_border
+                include_context 'with a frame', :existing_frame, :existing_frame_touching_the_right_border
+                include_context 'with a frame', :existing_frame, :existing_frame_touching_the_bottom_border
+                include_context 'with a frame', :existing_frame, :existing_frame_touching_the_left_border
                 include_context 'with a frame to add', :common_frame
 
                 it_behaves_like 'an invalid frame'
