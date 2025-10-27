@@ -7,6 +7,13 @@ FactoryBot.define do
       height { 6.0 }
     end
 
+    trait :second_common_frame do
+      center_x { 25.0 }
+      center_y { 6.0 }
+      width { 14.0 }
+      height { 10.0 }
+    end
+
     trait :square_frame do
       center_x { 10.0 }
       center_y { 10.0 }
