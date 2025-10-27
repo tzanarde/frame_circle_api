@@ -10,6 +10,10 @@ Rswag::Ui.configure do |c|
 
   c.swagger_endpoint '/api-docs/v1/swagger.yaml', 'API V1 Docs'
 
+  c.config_object['validatorUrl'] = nil
+
+  c.config_object['operationsSorter'] = 'method'
+
   # Add Basic Auth in case your API is private
   # c.basic_auth_enabled = true
   # c.basic_auth_credentials 'username', 'password'
