@@ -12,6 +12,8 @@ Rails.application.routes.draw do
       resources :frames, only: [:show, :create, :destroy] do
         resources :circles, only: :create
       end
+
+      resources :circles, only: [:index, :update, :destroy]
     end
   end
 end
