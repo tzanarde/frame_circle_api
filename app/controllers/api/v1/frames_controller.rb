@@ -4,7 +4,7 @@ module Api
       before_action :set_frame, only: [:show, :destroy]
 
       def show
-        render json: @frame, status: :ok
+        render json: @frame, serializer: FrameShowSerializer, status: :ok
       end
 
       def create
