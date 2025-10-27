@@ -11,9 +11,10 @@ A API fornece recursos para a criação e gerenciamento de quadros e círculos d
 
 ## Indíce
 - [Instalação](#instalação)
+- [Acesso ao Projeto e Documentação de API](#acesso-ao-projeto-e-documentação-de-api)
 - [Testes](#testes)
 - [Autenticação](#autenticação)
-- [Modelos](#endpoints)
+- [Endpoints](#endpoints)
     - [Exemplo](#exemplo)
 
 ---
@@ -48,6 +49,22 @@ Com isso a API já poderá ser acessada pela sua URL padrão:
 ```sh
 localhost:3000
 ```
+---
+
+## Acesso ao Projeto e Documentação de API
+
+Para gerar a documentação da API (Swagger/OpenAPI):
+```sh
+docker compose exec frame_circle_api-api bundle exec rake rswag:specs:swaggerize
+```
+
+Com a documentação gerada, acessar:
+```
+http://localhost:3000/api-docs/index.html
+```
+
+E a página a seguir será exibida com todos os endpoints da API disponíveis para requisão e consulta da documentação:
+![Página de documentação de API do Swagger](docs\api-docs.png)
 
 ---
 
