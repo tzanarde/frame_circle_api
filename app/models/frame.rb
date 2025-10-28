@@ -19,20 +19,15 @@ class Frame < ApplicationRecord
   end
 
   # Attribute Methods
-  def topmost_circle
-    circles.order(Arel.sql('center_y + (diameter / 2.0) DESC')).select(:center_x, :center_y).first&.attributes&.slice('center_x', 'center_y')
-  end
+  def topmost_circle = find_extreme_circle(:center_y, :+, :desc)
+  def rightmost_circle = find_extreme_circle(:center_x, :+, :desc)
+  def bottommost_circle = find_extreme_circle(:center_y, :-, :asc)
+  def leftmost_circle = find_extreme_circle(:center_x, :-, :asc)
 
-  def rightmost_circle
-    circles.order(Arel.sql('center_x + (diameter / 2.0) DESC')).select(:center_x, :center_y).first&.attributes&.slice('center_x', 'center_y')
-  end
-  
-  def bottommost_circle
-    circles.order(Arel.sql('center_y - (diameter / 2.0) ASC')).select(:center_x, :center_y).first&.attributes&.slice('center_x', 'center_y')
-  end
-
-  def leftmost_circle
-    circles.order(Arel.sql('center_x - (diameter / 2.0) ASC')).select(:center_x, :center_y).first&.attributes&.slice('center_x', 'center_y')
+  def find_extreme_circle(axis, operator, direction)
+    circles.order(Arel.sql("#{axis} #{operator} (diameter / 2.0) #{direction.to_s.upcase}"))
+           .select(:center_x, :center_y)
+           .first&.attributes&.slice('center_x', 'center_y')
   end
 
   def circles_amount = circles.count
