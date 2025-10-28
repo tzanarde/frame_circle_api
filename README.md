@@ -96,13 +96,13 @@ docker compose exec frame_circle_api-api rspec NOME_DO_ARQUIVO_DE_TESTE:NUMERO_D
 
 Na modelagem da aplicação foram criadas os seguintes modelos:
 
-### Frame
+### Frame (Quadro)
 - **center_x**: Campo com o valor no eixo X para o centro de um Quadro (Frame)
 - **center_y**: Campo com o valor no eixo Y para o centro de um Quadro (Frame)
 - **width**: Campo com o valor da largura do Quadro (Frame)
 - **height**: Campo com o valor da altura do Quadro (Frame)
 
-### Circle
+### Circle (Círculo)
 - **center_x**: Campo com o valor no eixo X para o centro de um Círculo (Circle)
 - **center_y**: Campo com o valor no eixo Y para o centro de um Círculo (Circle)
 - **diameter**: Campo com o valor do diametro do Círculo (Circle)
