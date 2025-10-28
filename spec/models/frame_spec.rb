@@ -7,20 +7,18 @@ RSpec.describe Frame, type: :model do
     end
     context 'for the destroy behavior' do
       context 'when the frame has no circles within' do
-        it 'do not destroy the frame and the circles' do
-          frame = create(:frame, :common_frame)
+        include_context 'with a frame', :frame, :common_frame
 
-          expect { frame.destroy }.to change { Frame.count }.by(-1)
-        end
+        it_behaves_like 'a destroyed frame'
       end
       context 'when the frame has circles within' do
-        it 'do not destroy the frame and the circles' do
-          frame = create(:frame, :common_frame)
+        include_context 'with a frame', :frame, :common_frame
+        before do
           create(:circle, :circle_within_frame, frame_id: frame.id)
           create(:circle, :second_circle_within_frame, frame_id: frame.id)
-
-          expect { frame.destroy }.to change { Circle.count }.by(0).and change { Frame.count }.by(0)
         end
+
+        it_behaves_like 'a not destroyed frame and circles'
       end
     end
   end

@@ -30,3 +30,15 @@ RSpec.shared_examples 'an invalid circle overlapping or touching other circles' 
     expect(second_circle_to_add.errors.full_messages).to include(t('messages.error.circle_overlap_or_touch_an_existing_circle'))
   end
 end
+
+RSpec.shared_examples 'a destroyed frame' do
+  it 'destroys the frame' do
+    expect { frame.destroy }.to change { Frame.count }.by(-1)
+  end
+end
+
+RSpec.shared_examples 'a not destroyed frame and circles' do
+  it 'do not destroy the frame and the circles' do
+    expect { frame.destroy }.to change { Circle.count }.by(0).and change { Frame.count }.by(0)
+  end
+end
