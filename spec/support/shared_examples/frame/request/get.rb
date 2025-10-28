@@ -26,8 +26,8 @@ RSpec.shared_examples 'a response with a frame with circles within' do |frame|
       method = position_info[position]
       axis = position_info[:axis]
 
-      actual_value = json[position.to_s][axis.to_s].to_f
-      expected_value = Array(circle_expected_values).public_send(method) { |circle| circle[axis] }[axis]
+      actual_value = json[position.to_s][axis.to_s]
+      expected_value = Array(circle_expected_values).public_send(method) { |circle| circle[axis] }[axis].to_s + " cm"
 
       expect(actual_value).to eq(expected_value)
     end
