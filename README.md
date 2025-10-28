@@ -65,8 +65,7 @@ Com a documentação gerada, acessar:
 http://localhost:3000/api-docs/index.html
 ```
 
-E a página a seguir será exibida com todos os endpoints da API disponíveis para requisão e consulta da documentação:
-![Página de documentação de API do Swagger](docs/api-docs.png)
+E a página será exibida com todos os endpoints da API disponíveis para requisição e consulta da documentação
 
 ---
 
