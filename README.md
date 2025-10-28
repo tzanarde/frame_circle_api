@@ -13,9 +13,9 @@ A API fornece recursos para a criação e gerenciamento de quadros e círculos d
 - [Instalação](#instalação)
 - [Acesso ao Projeto e Documentação de API](#acesso-ao-projeto-e-documentação-de-api)
 - [Testes](#testes)
-- [Autenticação](#autenticação)
 - [Endpoints](#endpoints)
-    - [Exemplo](#exemplo)
+    - [Frame](#frame)
+    - [Circle](#circle)
 
 ---
 
@@ -64,7 +64,7 @@ http://localhost:3000/api-docs/index.html
 ```
 
 E a página a seguir será exibida com todos os endpoints da API disponíveis para requisão e consulta da documentação:
-![Página de documentação de API do Swagger](docs\api-docs.png)
+![Página de documentação de API do Swagger](docs/api-docs.png)
 
 ---
 
@@ -89,17 +89,17 @@ docker compose exec frame_circle_api-api rspec NOME_DO_ARQUIVO_DE_TESTE:NUMERO_D
 
 ---
 
-## Autenticação
-
----
-
 ## Modelagem
 Na modelagem da aplicação foram criadas os seguintes modelos:
 
-### Exemplo
-Explicação:
-- **Campo 1**: campo1
+### Frame
+- **center_x**: Campo com o valor no eixo X para o centro de um Quadro (Frame)
+- **center_y**: Campo com o valor no eixo Y para o centro de um Quadro (Frame)
+- **width**: Campo com o valor da largura do Quadro (Frame)
+- **height**: Campo com o valor da altura do Quadro (Frame)
 
-### Esquema da Modelagem
-![]()
-
+### Circle
+- **center_x**: Campo com o valor no eixo X para o centro de um Círculo (Circle)
+- **center_y**: Campo com o valor no eixo Y para o centro de um Círculo (Circle)
+- **diameter**: Campo com o valor do diametro do Círculo (Circle)
+- **frame_id**: Campo com o ID do Quadro (Frame) que o Círculo (Circle) pertence
