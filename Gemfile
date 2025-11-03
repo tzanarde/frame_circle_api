@@ -61,5 +61,5 @@ end
 
 group :test do
   # Gem for rspec matchers
-  gem 'shoulda-matchers', '~> 6.0'
+  gem 'shoulda-matchers', '~> 7.0'
 end
